@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Todos from './components/Notebook';
+import Todos from './components/Todos';
 
 function App() {
   return (
