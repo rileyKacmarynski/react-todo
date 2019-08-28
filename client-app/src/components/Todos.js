@@ -4,7 +4,7 @@ import uuidv1 from 'uuid/v1';
 import TodoForm from './TodoForm';
 import Todo from './Todo';
 
-export default function Notebook() {
+export default function Todos() {
   const [todos, setTodos] = useState([]);
 
   function addTodo(description) {
@@ -18,6 +18,8 @@ export default function Notebook() {
       return newTodos.filter(el => el.id !== todo.id);
     });
   }
+
+  console.log('rendering <Todos /> component')
 
   return (
     <div className="todos">

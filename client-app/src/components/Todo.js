@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-export default function Todo({ todo, deleteTodo }) {
-  let [complete, setComplete] = useState(false);
+function Todo({ todo, deleteTodo }) {
+  const [complete, setComplete] = useState(false);
 
-  console.log(todo);
+  console.log('Rendering <Todo /> component', todo)
 
   return (
     <li className="todo">
@@ -22,3 +22,10 @@ export default function Todo({ todo, deleteTodo }) {
     </li>
   );
 }
+
+function compareTodos(prevTodo, nextTodo){  
+  return prevTodo.description === nextTodo.description
+    && prevTodo.id === nextTodo.id
+}
+
+export default React.memo(Todo, compareTodos);
