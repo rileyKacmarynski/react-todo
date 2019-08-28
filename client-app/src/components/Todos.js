@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import uuidv1 from 'uuid/v1';
 
 import TodoForm from './TodoForm';
 import Todo from './Todo';
@@ -6,16 +7,15 @@ import Todo from './Todo';
 export default function Notebook() {
   const [todos, setTodos] = useState([]);
 
-  function addTodo(todo) {
+  function addTodo(description) {
+    const todo = { id: uuidv1(), description };
     setTodos(todos => [...todos, todo]);
   }
 
   function deleteTodo(todo) {
     setTodos(todos => {
       const newTodos = [...todos];
-      const index = newTodos.indexOf(todo);
-      newTodos.splice(index, 1);
-      return newTodos;
+      return newTodos.filter(el => el.id !== todo.id);
     });
   }
 
@@ -24,8 +24,8 @@ export default function Notebook() {
       <TodoForm addTodo={addTodo} />
       <div>
         <ul>
-          {todos.map((todo, index) => (
-            <Todo key={index} todo={todo} deleteTodo={deleteTodo} />
+          {todos.map((todo) => (
+            <Todo key={todo.id} todo={todo} deleteTodo={deleteTodo} />
           ))}
         </ul>
       </div>

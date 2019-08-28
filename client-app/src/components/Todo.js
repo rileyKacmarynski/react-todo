@@ -11,7 +11,7 @@ export default function Todo({ todo, deleteTodo }) {
         className={complete ? 'strikethrough pointer' : 'strike pointer'}
         onClick={() => setComplete(!complete)}
       >
-        {todo}
+        {todo.description}
       </span>
       <i
         className="material-icons red pointer"
