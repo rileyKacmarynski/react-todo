@@ -14,6 +14,16 @@ const todos = [
 
 app.use(cors());
 
+app.use((req, res, next) => {
+  const logNext = () => {
+    console.log("...We back");
+    next();
+  };
+
+  console.log("Hold up...");
+  setTimeout(logNext, 1000);
+});
+
 app.get("/", (req, res) => res.send("Hello Express"));
 
 app.get("/todos", (req, res) => res.json(todos));
