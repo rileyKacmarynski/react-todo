@@ -1,0 +1,154 @@
+.material-icons.red {
+  color: #ff7369;
+  transition: color 0.15s;
+}
+
+.material-icons.red:hover,
+.material-icons.red:active {
+  color: #ff2d03;
+}
+
+html {
+  background-color: #fff;
+  color: #616161;
+  line-height: 1.5rem;
+  font-size: 20px;
+}
+
+input {
+  background-color: #fff48f;
+  border: none;
+  border-bottom: 2px solid #a8d4ff;
+  font-size: 28px;
+  width: 80%;
+  color: #616161;
+  transition: border-bottom 0.25s;
+}
+
+button {
+  outline: none;
+  background-color: #fff48f;
+  border: none;
+  cursor: pointer;
+  color: #a8d4ff;
+  transition: color 0.25s;
+}
+
+button:hover,
+button:active {
+  color: #0a6cff;
+}
+
+input:focus {
+  outline: none;
+  border-bottom: 2px solid #0a6cff;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  padding: 2px 0;
+  width: 100%;
+}
+
+li > i {
+  float: right;
+}
+
+.container {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr 12fr 1fr;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-areas:
+    'nav nav nav'
+    '. main .'
+    'footer footer footer';
+}
+
+.grid-item {
+  /* border: 1px black solid; */
+}
+
+nav {
+  grid-area: nav;
+}
+
+main {
+  grid-area: main;
+  background-color: #fff48f;
+  box-shadow: 10px 10px 20px #888888;
+}
+
+footer {
+  grid-area: footer;
+}
+
+.todos {
+  text-align: left;
+  padding: 50px;
+}
+
+.todo-form {
+  margin-bottom: 50px;
+}
+
+.todo {
+  background-color: #fff48f;
+  transition: background-color 0.15s;
+}
+
+.todo:hover,
+.todo:active {
+  /* background-color: rgba(0, 0, 0, 0.1); */
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+@keyframes strike {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes unstrike {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0;
+  }
+}
+.strike,
+.strikethrough {
+  position: relative;
+}
+
+/* .strike::after, */
+.strike:hover::after,
+.strike:active::after {
+  content: ' ';
+  position: absolute;
+  top: 56%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #616161;
+  animation-name: strike;
+  animation-duration: 0.25s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+}
