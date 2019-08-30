@@ -1,14 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import uuidv1 from 'uuid/v1';
+import axios from 'axios';
 
 import TodoForm from './TodoForm';
 import Todo from './Todo';
+import Loader from './Loader';
 
-export default function Todos() {
+const Todos = () => {
   const [todos, setTodos] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  function addTodo(description) {
+  useEffect(() => {
+    const fetchTodos = async () => {
+      setIsLoading(true);
+
+
+      const result = await axios.get('/todos')
+      
+      setTodos(result.data);
+      setIsLoading(false);
+    }
+
+    fetchTodos();
+  }, [])
+
+  async function addTodo(description) {
     const todo = { id: uuidv1(), description };
+
+    var res = await axios.post('/todos', todo);
     setTodos(todos => [...todos, todo]);
   }
 
@@ -23,14 +42,20 @@ export default function Todos() {
 
   return (
     <div className="todos">
-      <TodoForm addTodo={addTodo} />
-      <div>
-        <ul>
-          {todos.map((todo) => (
-            <Todo key={todo.id} todo={todo} deleteTodo={deleteTodo} />
-          ))}
-        </ul>
-      </div>
+    <TodoForm addTodo={addTodo} />
+    {isLoading 
+      ? <Loader />
+      : <div>
+          <ul>
+            {todos.map((todo) => (
+              <Todo key={todo.id} todo={todo} deleteTodo={deleteTodo} />
+            ))}
+          </ul>
+        </div>
+    }
+
     </div>
   );
 }
+
+export default Todos;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Todo({ todo, deleteTodo }) {
+const Todo = ({ todo, deleteTodo }) => {
   const [complete, setComplete] = useState(false);
 
   console.log('Rendering <Todo /> component', todo)
