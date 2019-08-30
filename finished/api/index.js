@@ -1,18 +1,10 @@
 const express = require("express");
-const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const app = express();
 const port = 3001;
 
-let id = 1;
-const todos = [
-  {
-    id: 1,
-    description: "Example todo"
-  }
-];
-
-app.use(cors());
+let todos = [];
 
 app.use((req, res, next) => {
   const logNext = () => {
@@ -24,14 +16,16 @@ app.use((req, res, next) => {
   setTimeout(logNext, 1000);
 });
 
+app.use(bodyParser.json());
+
 app.get("/", (req, res) => res.send("Hello Express"));
 
 app.get("/todos", (req, res) => res.json(todos));
 
 app.post("/todos", (req, res) => {
-  let todo = { id, description: "hey" };
+  let todo = req.body;
   todos = [...todos, todo];
-  res.json(todo);
+  res.sendStatus(200);
 });
 
 app.delete("/todos/:todoId", (req, res) => {
