@@ -6,36 +6,77 @@ import TodoForm from './TodoForm';
 import Todo from './Todo';
 import Loader from './Loader';
 
+const CancelToken = axios.CancelToken;
+const source = CancelToken.source();
+
 const Todos = () => {
   const [todos, setTodos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+    let didCancel = false;
+
     const fetchTodos = async () => {
+      setIsError(false);
       setIsLoading(true);
 
-
-      const result = await axios.get('/todos')
-      
-      setTodos(result.data);
-      setIsLoading(false);
+      try {
+        const result = await axios.get('/todos', {CancelToken: source.token});
+        if(!didCancel){
+          setTodos(result.data);
+          setIsLoading(false);
+        }
+      } catch(e) {
+        if(!didCancel){
+          setIsError(true);
+          setIsLoading(false);
+        } else {
+          console.log('Request Canceled', e.message);
+        }
+      }
     }
 
     fetchTodos();
+
+    return () =>{
+      didCancel = true;
+      source.cancel('Operation canceled by the user.');
+    }
   }, [])
 
-  async function addTodo(description) {
-    const todo = { id: uuidv1(), description };
-
-    var res = await axios.post('/todos', todo);
+  const addTodo = async(description) => {
+    const id = uuidv1();
+    const todo = { id, description };
     setTodos(todos => [...todos, todo]);
+    
+    try {
+      await axios.post('/todos', todo);
+      console.log('todo added')
+    } catch(e) {
+      setIsError(true); 
+      setTodos(todos => {
+        const newTodos = [...todos];
+        return newTodos.filter(el => el.id !== id);
+      });
+    }
   }
 
-  function deleteTodo(todo) {
-    setTodos(todos => {
-      const newTodos = [...todos];
-      return newTodos.filter(el => el.id !== todo.id);
-    });
+  const deleteTodo = async (id) => {
+      setIsError(false);
+      const deletedTodo = todos.filter(el => el.id === id);
+      setTodos(todos => {
+        const newTodos = [...todos];
+        return newTodos.filter(el => el.id !== id);
+      });
+
+      try {
+        await axios.delete(`/todos/${id}`)
+        console.log('deleted')
+      } catch {
+        setIsError(true)
+        setTodos(todos => [...todos, deletedTodo]);
+      }
   }
 
   console.log('rendering <Todos /> component')
@@ -43,6 +84,7 @@ const Todos = () => {
   return (
     <div className="todos">
     <TodoForm addTodo={addTodo} />
+    {isError && <p>Error communicating with server</p>}
     {isLoading 
       ? <Loader />
       : <div>
@@ -53,7 +95,6 @@ const Todos = () => {
           </ul>
         </div>
     }
-
     </div>
   );
 }

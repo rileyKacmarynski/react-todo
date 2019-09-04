@@ -15,7 +15,7 @@ const Todo = ({ todo, deleteTodo }) => {
       </span>
       <i
         className="material-icons red pointer"
-        onClick={() => deleteTodo(todo)}
+        onClick={() => deleteTodo(todo.id)}
       >
         delete
       </i>
